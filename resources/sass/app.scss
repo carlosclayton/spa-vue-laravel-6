@@ -1,1 +1,23 @@
-//
+// Fonts
+@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic');
+@import '~font-awesome/css/font-awesome.css';
+
+// Icons
+@import '~ionicons/dist/css/ionicons.css';
+
+// Variables
+@import 'variables';
+
+// Bootstrap
+@import '~bootstrap/dist/css/bootstrap.css';
+
+
+// Simplert
+@import "~vue2-simplert/dist/simplert.common.css";
+
+
+// AdminLTE
+@import '~admin-lte/dist/css/AdminLTE.css';
+@import '~admin-lte/dist/css/skins/_all-skins.css';
+@import '~icheck/skins/flat/blue.css';
+@import "~bootstrap-toggle/css/bootstrap-toggle.css";
