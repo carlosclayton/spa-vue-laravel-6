@@ -1,3 +1,7 @@
+import Vue from 'vue';
+import router from './routes';
+import App from './components/App';
+
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -26,7 +30,14 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
-
-const app = new Vue({
+new Vue({
+    http: {
+        root: '/api',
+    },
     el: '#app',
-});
+    router,
+    template: '<App/>',
+    components: {
+        App
+    }
+})

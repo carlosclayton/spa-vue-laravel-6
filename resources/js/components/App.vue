@@ -9,11 +9,10 @@
 
     export default {
         name: 'app',
-        data () {
-            return {
-            }
+        data() {
+            return {}
         },
-        created () {
+        created() {
         },
 
     }
