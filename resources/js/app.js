@@ -6,6 +6,9 @@ import VueResource from 'vue-resource'
 Vue.use(VueResource)
 Vue.http.options.root = 'https://api-laravel-restful.herokuapp.com/api/';
 
+// Interceptor
+require('./services/interceptors')
+
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when

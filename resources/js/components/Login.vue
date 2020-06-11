@@ -1,5 +1,10 @@
 <template>
     <div class="login-box">
+        <loading :active.sync="isLoading"
+                 :can-cancel="true"
+                 :on-cancel="onCancel"
+                 :is-full-page="fullPage"></loading>
+
         <div class="login-logo">
             <a href="../../index2.html"><b>Admin</b>LTE</a>
         </div>
@@ -76,8 +81,15 @@
 
     import Vue from 'vue'
     import VueResource from 'vue-resource'
-
     Vue.use(VueResource)
+
+    import VueToast from 'vue-toast-notification';
+    import 'vue-toast-notification/dist/theme-default.css';
+    Vue.use(VueToast);
+
+
+    import Loading from 'vue-loading-overlay';
+    import 'vue-loading-overlay/dist/vue-loading.css';
 
     import {extend} from 'vee-validate';
 
@@ -95,12 +107,15 @@
 
     import Jwt from '../services/resources'
     import localStorage from "../services/local-storage";
+    import Auth from '../services/auth'
 
     export default {
         data() {
             return {
                 email: '',
-                password: ''
+                password: '',
+                isLoading: false,
+                fullPage: true
             }
         },
         mounted() {
@@ -108,19 +123,32 @@
             document.body.className = 'hold-transition login-page';
         },
         methods: {
+            onCancel() {
+                console.log('User cancelled the loader.')
+            },
             onSubmit() {
-                Jwt.accessToken(this.email, this.password)
-                    .then(response => {
+                this.isLoading = true
+                Auth.login(this.email, this.password)
+                    .then((response) => {
                         console.log('Token: ', response.body.token)
-                        localStorage.set('token', response.body.token)
+                        this.isLoading = false
+                        this.$router.push('home');
                     }, response => {
                         console.log('Error: ', response.body.error)
+                        this.isLoading = false
+                        Vue.$toast.open({
+                            type: 'error',
+                            message: response.body.error,
+                            position: 'bottom',
+                            duration: 5000
+                        })
                     });
             }
         },
         components: {
             ValidationProvider,
-            ValidationObserver
+            ValidationObserver,
+            Loading
         }
     }
 </script>
