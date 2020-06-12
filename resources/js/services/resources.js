@@ -7,4 +7,8 @@ export default class Jwt {
             password: password
         })
     }
+
+    static getUser(){
+        return Vue.http.get('user');
+    }
 }

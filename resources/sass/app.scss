@@ -9,7 +9,10 @@
 @import 'variables';
 
 // Bootstrap
-@import '~bootstrap/dist/css/bootstrap.css';
+
+@import '~bootstrap/dist/css/bootstrap.min.css';
+@import '~bootstrap/dist/css/bootstrap-theme.min.css';
+
 
 
 // Simplert
@@ -17,7 +20,7 @@
 
 
 // AdminLTE
-@import '~admin-lte/dist/css/AdminLTE.css';
+@import '~admin-lte/dist/css/AdminLTE.min.css';
 @import '~admin-lte/dist/css/skins/_all-skins.css';
 @import '~icheck/skins/flat/blue.css';
-@import "~bootstrap-toggle/css/bootstrap-toggle.css";
+@import "~bootstrap-toggle/css/bootstrap-toggle.min.css";

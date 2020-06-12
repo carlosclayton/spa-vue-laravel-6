@@ -1,16 +1,42 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import ExampleComponent from './components/ExampleComponent';
+import localStorage from "./services/local-storage";
 import Login from './components/Login';
 import Home from "./components/Home";
 
 Vue.use(VueRouter);
 
-export default new VueRouter({
+
+const router = new VueRouter({
     routes: [
-        {path: '/login', component: Login},
-        {path: '*', redirect: '/login'},
-        {path: '/home', component: Home},
+        {
+            path: '/home',
+            component: Home,
+        },
+        {
+            path: '/login',
+            component: Login
+        },
+        {
+            path: '*',
+            redirect: '/login'
+        }
     ],
     mode: 'history'
 });
+
+router.beforeEach((to, from, next) => {
+
+    const publicPages = ['/login'];
+    const authRequired = !publicPages.includes(to.path);
+    const loggedIn = localStorage.get('token');
+
+
+    if (authRequired && !loggedIn) {
+        return next('/login');
+    }
+
+    next();
+})
+
+export default router;

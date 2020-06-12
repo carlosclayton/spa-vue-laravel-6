@@ -13,47 +13,25 @@
             </a>
             <div class="navbar-custom-menu">
                 <ul class="nav navbar-nav">
-                    <li class="dropdown messages-menu">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <i class="fa fa-envelope-o"></i>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li class="header">Nenhuma mensagem</li>
 
-                        </ul>
-                    </li>
-                    <li class="dropdown notifications-menu">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <i class="fa fa-bell-o"></i>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li class="header">Nenhuma tarefa</li>
 
-                        </ul>
-                    </li>
-                    <li class="dropdown messages-menu">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <i class="fa  fa-users"></i>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li class="header">You have 0 tasks</li>
-                        </ul>
-                    </li>
+
+
                     <li class="dropdown user user-menu">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <img src="~admin-lte/dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
+                            <v-gravatar :email="currentUser.email" class="user-image" :alt="currentUser.name" />
                             <span class="hidden-xs">{{ currentUser.name }}</span>
                         </a>
                         <ul class="dropdown-menu">
                             <!-- User image -->
 
                             <li class="user-header">
-                                <img src="~admin-lte/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                                <v-gravatar :email="currentUser.email" class="img-circle" :alt="currentUser.name" />
 
                                 <p>
                                     {{ currentUser.name }}
                                 </p>
-                                {{ currentUser.position }}
+                                {{ currentUser.role }}
                             </li>
                             <!-- Menu Footer-->
                             <li class="user-footer">
@@ -76,24 +54,26 @@
 </template>
 
 <script>
+    import Vue from 'vue';
+    import Gravatar from 'vue-gravatar';
 
+    Vue.component('v-gravatar', Gravatar);
+    import Auth from '../services/auth';
 
     export default {
         name: 'va-navibar',
         data() {
             return {
-                currentUser: {
-                    name: "Alexander Pierce",
-                    position: "Web Developer",
-                    state: {
-                        color: "#3c763d",
-                        name: "Online"
-                    },
-                    createdAt: "2018-03-30T21:06:47.164Z"
-                },
+                currentUser: [],
             }
         },
         mounted() {
+            Auth.user()
+                .then((response) => {
+                    console.log('User: ', response.data)
+                    this.currentUser = response.body.data
+                })
+
             console.log('Navbar mounted');
         },
 

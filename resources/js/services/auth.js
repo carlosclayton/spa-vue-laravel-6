@@ -8,5 +8,9 @@ export default {
                 localStorage.set('token', response.body.token)
                 return response
             })
+    },
+
+    user(){
+        return Jwt.getUser()
     }
 }

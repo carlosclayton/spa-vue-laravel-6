@@ -4,11 +4,11 @@
         <section class="sidebar">
             <div class="user-panel">
                 <div class="pull-left image">
-                    <img src="~admin-lte/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                    <v-gravatar :email="currentUser.email" class="img-circle" :alt="currentUser.name" />
                 </div>
                 <div class="pull-left info">
                     <p>{{ currentUser.name }}</p>
-                    <a href="#"><i class="fa fa-circle text-success"></i> {{ currentUser.state.name }}</a>
+                    <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
                 </div>
             </div>
             <form action="#" method="get" class="sidebar-form">
@@ -41,6 +41,11 @@
 </template>
 
 <script>
+    import Vue from 'vue';
+    import Gravatar from 'vue-gravatar';
+
+    Vue.component('v-gravatar', Gravatar);
+    import Auth from "../services/auth";
 
     export default {
         name: 'va-slider',
@@ -50,18 +55,15 @@
         },
         data() {
             return {
-                currentUser: {
-                    name: "Alexander Pierce",
-                    position: "Web Developer",
-                    state: {
-                        color: "#3c763d",
-                        name: "Online"
-                    },
-                    createdAt: "2018-03-30T21:06:47.164Z"
-                },
+                currentUser: [],
             }
         },
         mounted() {
+            Auth.user()
+                .then((response) => {
+                    console.log('User: ', response.data)
+                    this.currentUser = response.body.data
+                })
             console.log('Slider mounted');
         },
 
