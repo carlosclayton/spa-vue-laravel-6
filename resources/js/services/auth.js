@@ -20,5 +20,9 @@ export default {
                 localStorage.remove('token');
                 return response
             })
+    },
+
+    forgot(email){
+        return Jwt.forgot(email);
     }
 }

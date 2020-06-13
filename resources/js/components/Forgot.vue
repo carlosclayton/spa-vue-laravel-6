@@ -1,16 +1,19 @@
 <template>
+
     <div class="login-box">
+
         <loading :active.sync="isLoading"
                  :can-cancel="true"
                  :on-cancel="onCancel"
                  :is-full-page="fullPage"></loading>
+
 
         <div class="login-logo">
             <a href="../../index2.html"><b>Admin</b>LTE</a>
         </div>
         <!-- /.login-logo -->
         <div class="login-box-body">
-            <p class="login-box-msg">Sign in to start your session</p>
+            <p class="login-box-msg">Forgot password</p>
 
             <ValidationObserver v-slot="{ handleSubmit, invalid }">
                 <form @submit.prevent="handleSubmit(onSubmit)">
@@ -22,58 +25,15 @@
                             <span class="help-block">{{ errors[0] }}</span>
                         </div>
                     </ValidationProvider>
-
-
-                    <ValidationProvider name="Password" rules="required|min:3|max:100" v-slot="{ errors, failed }">
-                        <div :class="{'form-group': true,  'has-feedback': true, 'has-error': failed }">
-                            <input v-model="password" type="password" class="form-control">
-                            <span class="glyphicon glyphicon-lock form-control-feedback"></span>
-                            <span class="help-block">{{ errors[0] }}</span>
-                        </div>
-                    </ValidationProvider>
-
                     <div class="row">
-                        <div class="col-xs-8">
-                            <div class="checkbox icheck">
-                                <label>
-                                    <div class="icheckbox_square-blue" aria-checked="false" aria-disabled="false"
-                                         style="position: relative;"><input type="checkbox"
-                                                                            style="position: absolute; top: -20%; left: -20%; display: block; width: 140%; height: 140%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;">
-                                        <ins class="iCheck-helper"
-                                             style="position: absolute; top: -20%; left: -20%; display: block; width: 140%; height: 140%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins>
-                                    </div>
-                                    Remember Me
-                                </label>
-                            </div>
-                        </div>
-                        <!-- /.col -->
                         <div class="col-xs-4">
                             <button type="submit" :disabled="invalid" class="btn btn-primary btn-block btn-flat">
-                                Sign
-                                In
+                                Send
                             </button>
                         </div>
-                        <!-- /.col -->
                     </div>
                 </form>
             </ValidationObserver>
-
-            <div class="social-auth-links text-center">
-                <p>- OR -</p>
-                <a href="#" class="btn btn-block btn-social btn-facebook btn-flat"><i class="fa fa-facebook"></i> Sign
-                    in using
-                    Facebook</a>
-                <a href="#" class="btn btn-block btn-social btn-google btn-flat"><i class="fa fa-google-plus"></i> Sign
-                    in using
-                    Google+</a>
-            </div>
-            <!-- /.social-auth-links -->
-            <div class="text-center">
-                <router-link :to="{ path: 'forgot'}">I forgot my password</router-link>
-                <br/>
-                <a href="register.html" class="text-center">Register a new membership</a>
-            </div>
-
         </div>
         <!-- /.login-box-body -->
     </div>
@@ -81,19 +41,20 @@
 
 <script>
 
-    import Vue from 'vue'
-    import VueResource from 'vue-resource'
 
-    Vue.use(VueResource)
-
+    import Vue from 'vue';
     import VueToast from 'vue-toast-notification';
     import 'vue-toast-notification/dist/theme-default.css';
 
     Vue.use(VueToast);
 
 
+
     import Loading from 'vue-loading-overlay';
     import 'vue-loading-overlay/dist/vue-loading.css';
+
+    import Jwt from '../services/resources'
+    import Auth from '../services/auth'
 
     import {extend} from 'vee-validate';
 
@@ -101,6 +62,7 @@
     import {messages} from 'vee-validate/dist/locale/pt_BR.json';
 
     import {ValidationProvider, ValidationObserver} from 'vee-validate';
+    import localStorage from "../services/local-storage";
 
     Object.keys(rules).forEach(rule => {
         extend(rule, {
@@ -109,35 +71,36 @@
         });
     });
 
-    import Jwt from '../services/resources'
-    import localStorage from "../services/local-storage";
-    import Auth from '../services/auth'
-
     export default {
         data() {
             return {
                 email: '',
-                password: '',
                 isLoading: false,
                 fullPage: true
+
             }
         },
         mounted() {
             console.log('Component mounted.')
-            document.body.className = 'hold-transition login-page';
         },
         methods: {
             onCancel() {
                 console.log('User cancelled the loader.')
             },
             onSubmit() {
+
                 this.isLoading = true
-                Auth.login(this.email, this.password)
+                Auth.forgot(this.email)
                     .then((response) => {
-                        console.log('Token: ', response.body.token)
+                        console.log('Message: ', response.body.message)
                         this.isLoading = false
-                        this.$store.dispatch('initLogin')
-                        this.$router.push('home');
+                        Vue.$toast.open({
+                            type: 'success',
+                            message: response.body.message,
+                            position: 'bottom',
+                            duration: 5000
+                        })
+
                     }, response => {
                         console.log('Error: ', response.body.error)
                         this.isLoading = false
@@ -148,12 +111,14 @@
                             duration: 5000
                         })
                     });
+
             }
         },
         components: {
             ValidationProvider,
             ValidationObserver,
             Loading
+
         }
     }
 </script>

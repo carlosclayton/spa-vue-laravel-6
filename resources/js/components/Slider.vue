@@ -8,7 +8,7 @@
                 </div>
                 <div class="pull-left info">
                     <p>{{ currentUser.name }}</p>
-                    <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+                    <a href="#"><i :class="['fa fa-circle', status ? 'text-green' : 'text-red'] " ></i> {{ status ? 'Online' : 'Offline' }}</a>
                 </div>
             </div>
             <form action="#" method="get" class="sidebar-form">
@@ -46,6 +46,7 @@
 
     Vue.component('v-gravatar', Gravatar);
     import Auth from "../services/auth";
+    import store from '../services/store';
 
     export default {
         name: 'va-slider',
@@ -56,9 +57,13 @@
         data() {
             return {
                 currentUser: [],
+                status: store.state.loggingIn
             }
         },
         mounted() {
+            if (store.state.loggingIn) this.status = 'Online';
+            if (store.state.loggingIn ) this.color =  'text-green';
+
             Auth.user()
                 .then((response) => {
                     console.log('User: ', response.data)

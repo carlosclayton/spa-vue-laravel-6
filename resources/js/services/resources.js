@@ -15,4 +15,10 @@ export default class Jwt {
     static logout(){
         return Vue.http.post('logout')
     }
+
+    static forgot(email){
+        return Vue.http.post('password/forgot', {
+            email: email
+        })
+    }
 }

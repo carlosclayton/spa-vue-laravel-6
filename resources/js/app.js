@@ -1,10 +1,12 @@
 import Vue from 'vue';
 import router from './routes';
 import App from './components/App';
+import store from './services/store';
 
 import VueResource from 'vue-resource'
 Vue.use(VueResource)
-Vue.http.options.root = 'https://api-laravel-restful.herokuapp.com/api/';
+ Vue.http.options.root = 'https://api-laravel-restful.herokuapp.com/api/';
+// Vue.http.options.root = 'http://api.laravel/api';
 
 // Interceptor
 require('./services/interceptors')
@@ -41,6 +43,7 @@ new Vue({
     http: {
         root: '/api',
     },
+    store,
     el: '#app',
     router,
     template: '<App/>',

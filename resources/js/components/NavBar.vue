@@ -91,6 +91,7 @@
             logout() {
                 Auth.logout()
                     .then(() => {
+                        this.$store.dispatch('initLogout')
                         this.$router.push('/login');
                         Vue.$toast.open({
                             type: 'success',
