@@ -140,6 +140,11 @@
                 this.$gAuth.signIn()
                     .then(GoogleUser => {
                         console.log('user', GoogleUser)
+                        var profile = GoogleUser.getBasicProfile();
+                        console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+                        console.log('Name: ' + profile.getName());
+                        console.log('Image URL: ' + profile.getImageUrl());
+                        console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
                         // Auth.register(GoogleUser.w3.ig, GoogleUser.w3.U3, GoogleUser.w3.Eea)
                         //     .then((response) => {
                         //         this.$store.dispatch('initLogin')
