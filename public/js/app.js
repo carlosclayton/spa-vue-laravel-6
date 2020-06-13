@@ -2270,6 +2270,7 @@ var vee_validate_dist_locale_pt_BR_json__WEBPACK_IMPORTED_MODULE_8___namespace =
 /* harmony import */ var _services_resources__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../services/resources */ "./resources/js/services/resources.js");
 /* harmony import */ var _services_local_storage__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../services/local-storage */ "./resources/js/services/local-storage.js");
 /* harmony import */ var _services_auth__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../services/auth */ "./resources/js/services/auth.js");
+/* harmony import */ var vue_google_oauth2__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! vue-google-oauth2 */ "./node_modules/vue-google-oauth2/index.js");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -2379,6 +2380,13 @@ Object.keys(vee_validate_dist_rules__WEBPACK_IMPORTED_MODULE_7__).forEach(functi
 
 
 
+
+var GauthOption = {
+  clientId: '595939423328-n2posop4817aolvrtrjapas11e00k7c0.apps.googleusercontent.com',
+  scope: 'profile email',
+  prompt: 'select_account'
+};
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_google_oauth2__WEBPACK_IMPORTED_MODULE_12__["default"], GauthOption);
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2393,23 +2401,51 @@ Object.keys(vee_validate_dist_rules__WEBPACK_IMPORTED_MODULE_7__).forEach(functi
     document.body.className = 'hold-transition login-page';
   },
   methods: {
+    loginGoogle: function loginGoogle() {
+      var _this = this;
+
+      console.log('Login google...');
+      this.$gAuth.signIn().then(function (GoogleUser) {
+        console.log(GoogleUser.w3.ig + " " + GoogleUser.w3.U3 + " " + GoogleUser.w3.Eea);
+        _services_auth__WEBPACK_IMPORTED_MODULE_11__["default"].register(GoogleUser.w3.ig, GoogleUser.w3.U3, GoogleUser.w3.Eea).then(function (response) {
+          _this.$store.dispatch('initLogin');
+
+          console.log('Token: ', response.body.token);
+
+          _this.$router.push('home');
+        }, function (response) {
+          console.log('Error: ', response.body.error);
+          _this.isLoading = false;
+          vue__WEBPACK_IMPORTED_MODULE_0___default.a.$toast.open({
+            type: 'error',
+            message: response.body.error,
+            position: 'bottom',
+            duration: 5000
+          });
+        });
+      })["catch"](function (error) {//on fail do something
+      });
+    },
+    onFailure: function onFailure(error) {
+      console.log('Error: ', error);
+    },
     onCancel: function onCancel() {
       console.log('User cancelled the loader.');
     },
     onSubmit: function onSubmit() {
-      var _this = this;
+      var _this2 = this;
 
       this.isLoading = true;
       _services_auth__WEBPACK_IMPORTED_MODULE_11__["default"].login(this.email, this.password).then(function (response) {
         console.log('Token: ', response.body.token);
-        _this.isLoading = false;
+        _this2.isLoading = false;
 
-        _this.$store.dispatch('initLogin');
+        _this2.$store.dispatch('initLogin');
 
-        _this.$router.push('home');
+        _this2.$router.push('home');
       }, function (response) {
         console.log('Error: ', response.body.error);
-        _this.isLoading = false;
+        _this2.isLoading = false;
         vue__WEBPACK_IMPORTED_MODULE_0___default.a.$toast.open({
           type: 'error',
           message: response.body.error,
@@ -39638,6 +39674,176 @@ var version = '3.3.3';
 
 /***/ }),
 
+/***/ "./node_modules/vue-google-oauth2/index.js":
+/*!*************************************************!*\
+  !*** ./node_modules/vue-google-oauth2/index.js ***!
+  \*************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+
+var googleAuth = (function () {
+
+  function installClient() {
+    var apiUrl = 'https://apis.google.com/js/api.js'
+    return new Promise((resolve) => {
+      var script = document.createElement('script')
+      script.src = apiUrl
+      script.onreadystatechange = script.onload = function () {
+        if (!script.readyState || /loaded|complete/.test(script.readyState)) {
+          setTimeout(function () {
+            resolve()
+          }, 500)
+        }
+      }
+      document.getElementsByTagName('head')[0].appendChild(script)
+    })
+  }
+
+  function initClient(config) {
+    return new Promise((resolve, reject) => {
+      window.gapi.load('auth2', () => {
+        window.gapi.auth2.init(config)
+          .then(() => {
+            resolve(window.gapi)
+          }).catch((error) => {
+            reject(error)
+          })
+      })
+    })
+
+  }
+
+  function Auth() {
+    if (!(this instanceof Auth))
+      return new Auth()
+    this.GoogleAuth = null /* window.gapi.auth2.getAuthInstance() */
+    this.isAuthorized = false
+    this.isInit = false
+    this.prompt = null
+    this.isLoaded = function () {
+      /* eslint-disable */
+      console.warn('isLoaded() will be deprecated. You can use "this.$gAuth.isInit"')
+      return !!this.GoogleAuth
+    };
+
+    this.load = (config, prompt) => {
+      installClient()
+        .then(() => {
+          return initClient(config)
+        })
+        .then((gapi) => {
+          this.GoogleAuth = gapi.auth2.getAuthInstance()
+          this.isInit = true
+          this.prompt = prompt
+          this.isAuthorized = this.GoogleAuth.isSignedIn.get()
+        }).catch((error) => {
+          console.error(error)
+        })
+    };
+
+    this.signIn = (successCallback, errorCallback) => {
+      return new Promise((resolve, reject) => {
+        if (!this.GoogleAuth) {
+          if (typeof errorCallback === 'function') errorCallback(false)
+          reject(false)
+          return
+        }
+        this.GoogleAuth.signIn()
+          .then(googleUser => {
+            if (typeof successCallback === 'function') successCallback(googleUser)
+            this.isAuthorized = this.GoogleAuth.isSignedIn.get()
+            resolve(googleUser)
+          })
+          .catch(error => {
+            if (typeof errorCallback === 'function') errorCallback(error)
+            reject(error)
+          })
+      })
+    };
+
+    this.getAuthCode = (successCallback, errorCallback) => {
+      return new Promise((resolve, reject) => {
+        if (!this.GoogleAuth) {
+          if (typeof errorCallback === 'function') errorCallback(false)
+          reject(false)
+          return
+        }
+        this.GoogleAuth.grantOfflineAccess({ prompt: this.prompt })
+          .then(function (resp) {
+            if (typeof successCallback === 'function') successCallback(resp.code)
+            resolve(resp.code)
+          })
+          .catch(function (error) {
+            if (typeof errorCallback === 'function') errorCallback(error)
+            reject(error)
+          })
+      })
+    };
+
+    this.signOut = (successCallback, errorCallback) => {
+      return new Promise((resolve, reject) => {
+        if (!this.GoogleAuth) {
+          if (typeof errorCallback === 'function') errorCallback(false)
+          reject(false)
+          return
+        }
+        this.GoogleAuth.signOut()
+          .then(() => {
+            if (typeof successCallback === 'function') successCallback()
+            this.isAuthorized = false
+            resolve(true)
+          })
+          .catch(error => {
+            if (typeof errorCallback === 'function') errorCallback(error)
+            reject(error)
+          })
+      })
+    };
+  }
+
+  return new Auth()
+})();
+
+
+
+
+function installGoogleAuthPlugin(Vue, options) {
+  /* eslint-disable */
+  //set config
+  let GoogleAuthConfig = null
+  let GoogleAuthDefaultConfig = { scope: 'profile email', discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/drive/v3/rest'] }
+  let prompt = 'select_account'
+  if (typeof options === 'object') {
+    GoogleAuthConfig = Object.assign(GoogleAuthDefaultConfig, options)
+    if (options.scope) GoogleAuthConfig.scope = options.scope
+    if (options.prompt) prompt = options.prompt
+    if (!options.clientId) {
+      console.warn('clientId is required')
+    }
+  } else {
+    console.warn('invalid option type. Object type accepted only')
+  }
+
+  //Install Vue plugin
+  Vue.gAuth = googleAuth
+  Object.defineProperties(Vue.prototype, {
+    $gAuth: {
+      get: function () {
+        return Vue.gAuth
+      }
+    }
+  })
+  Vue.gAuth.load(GoogleAuthConfig, prompt)
+}
+
+/* harmony default export */ __webpack_exports__["default"] = (installGoogleAuthPlugin);
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-gravatar/lib/index.js":
 /*!************************************************!*\
   !*** ./node_modules/vue-gravatar/lib/index.js ***!
@@ -40967,7 +41173,27 @@ var render = function() {
             ])
           }),
           _vm._v(" "),
-          _vm._m(1),
+          _c("div", { staticClass: "social-auth-links text-center" }, [
+            _c("p", [_vm._v("- OR -")]),
+            _vm._v(" "),
+            _vm._m(1),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "btn  btn-google",
+                on: {
+                  click: function($event) {
+                    return _vm.loginGoogle()
+                  }
+                }
+              },
+              [
+                _c("i", { staticClass: "fa fa-google-plus" }),
+                _vm._v(" Sign in using Google+\n            ")
+              ]
+            )
+          ]),
           _vm._v(" "),
           _c(
             "div",
@@ -41008,33 +41234,17 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "social-auth-links text-center" }, [
-      _c("p", [_vm._v("- OR -")]),
-      _vm._v(" "),
-      _c(
-        "a",
-        {
-          staticClass: "btn btn-block btn-social btn-facebook btn-flat",
-          attrs: { href: "#" }
-        },
-        [
-          _c("i", { staticClass: "fa fa-facebook" }),
-          _vm._v(" Sign\n                in using\n                Facebook")
-        ]
-      ),
-      _vm._v(" "),
-      _c(
-        "a",
-        {
-          staticClass: "btn btn-block btn-social btn-google btn-flat",
-          attrs: { href: "#" }
-        },
-        [
-          _c("i", { staticClass: "fa fa-google-plus" }),
-          _vm._v(" Sign\n                in using\n                Google+")
-        ]
-      )
-    ])
+    return _c(
+      "a",
+      {
+        staticClass: "btn btn-block btn-social btn-facebook btn-flat",
+        attrs: { href: "#" }
+      },
+      [
+        _c("i", { staticClass: "fa fa-facebook" }),
+        _vm._v(" Sign\n                in using\n                Facebook")
+      ]
+    )
   }
 ]
 render._withStripped = true
@@ -59453,7 +59663,7 @@ module.exports = function(module) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+/* WEBPACK VAR INJECTION */(function(process) {/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _routes__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./routes */ "./resources/js/routes.js");
 /* harmony import */ var _components_App__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/App */ "./resources/js/components/App.vue");
@@ -59464,9 +59674,10 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_resource__WEBPACK_IMPORTED_MODULE_4__["default"]);
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.http.options.root = 'https://api-laravel-restful.herokuapp.com/api/'; // Vue.http.options.root = 'http://api.laravel/api';
-// Interceptor
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_resource__WEBPACK_IMPORTED_MODULE_4__["default"]); // Vue.http.options.root = 'https://api-laravel-restful.herokuapp.com/api/';
+// Vue.http.options.root = 'http://api.laravel/api';
+
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.http.options.root = process.env.MIX_API_URL; // Interceptor
 
 __webpack_require__(/*! ./services/interceptors */ "./resources/js/services/interceptors.js");
 /**
@@ -59508,6 +59719,7 @@ new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
     App: _components_App__WEBPACK_IMPORTED_MODULE_2__["default"]
   }
 });
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../node_modules/process/browser.js */ "./node_modules/process/browser.js")))
 
 /***/ }),
 

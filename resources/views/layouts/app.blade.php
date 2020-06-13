@@ -15,7 +15,7 @@
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
     <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ (env('APP_ENV') === 'local') ? mix('css/app.css') : asset('css/app.css') }}" rel="stylesheet">
 </head>
 <body>
 <div id="app">
@@ -24,6 +24,6 @@
 
 <!-- Scripts -->
 {{--<script src="https://cdn.bootcss.com/jquery/1.8.3/jquery.min.js"></script>--}}
-<script src="{{ asset('js/app.js') }}" defer></script>
+<script src="{{ (env('APP_ENV') === 'local') ? mix('js/app.js') : asset('js/app.js') }}" defer></script>
 </html>
 

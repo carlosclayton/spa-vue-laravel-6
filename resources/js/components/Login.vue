@@ -63,9 +63,9 @@
                 <a href="#" class="btn btn-block btn-social btn-facebook btn-flat"><i class="fa fa-facebook"></i> Sign
                     in using
                     Facebook</a>
-                <a href="#" class="btn btn-block btn-social btn-google btn-flat"><i class="fa fa-google-plus"></i> Sign
-                    in using
-                    Google+</a>
+                <button v-on:click="loginGoogle()" class="btn  btn-google"><i
+                    class="fa fa-google-plus"></i> Sign in using Google+
+                </button>
             </div>
             <!-- /.social-auth-links -->
             <div class="text-center">
@@ -83,12 +83,10 @@
 
     import Vue from 'vue'
     import VueResource from 'vue-resource'
-
     Vue.use(VueResource)
 
     import VueToast from 'vue-toast-notification';
     import 'vue-toast-notification/dist/theme-default.css';
-
     Vue.use(VueToast);
 
 
@@ -113,6 +111,16 @@
     import localStorage from "../services/local-storage";
     import Auth from '../services/auth'
 
+
+    import GAuth from 'vue-google-oauth2'
+
+    const GauthOption = {
+        clientId: '595939423328-n2posop4817aolvrtrjapas11e00k7c0.apps.googleusercontent.com',
+        scope: 'profile email',
+        prompt: 'select_account'
+    }
+    Vue.use(GAuth, GauthOption)
+
     export default {
         data() {
             return {
@@ -127,6 +135,35 @@
             document.body.className = 'hold-transition login-page';
         },
         methods: {
+            loginGoogle() {
+                console.log('Login google...')
+                this.$gAuth.signIn()
+                    .then(GoogleUser => {
+                        console.log(GoogleUser.w3.ig + " " + GoogleUser.w3.U3 + " " + GoogleUser.w3.Eea)
+                        Auth.register(GoogleUser.w3.ig, GoogleUser.w3.U3, GoogleUser.w3.Eea)
+                            .then((response) => {
+                                this.$store.dispatch('initLogin')
+                                console.log('Token: ', response.body.token)
+                                this.$router.push('home');
+                            }, response => {
+                                console.log('Error: ', response.body.error)
+                                this.isLoading = false
+                                Vue.$toast.open({
+                                    type: 'error',
+                                    message: response.body.error,
+                                    position: 'bottom',
+                                    duration: 5000
+                                })
+                            });
+
+                    })
+                    .catch(error => {
+                        //on fail do something
+                    })
+            },
+            onFailure(error) {
+                console.log('Error: ', error)
+            },
             onCancel() {
                 console.log('User cancelled the loader.')
             },
