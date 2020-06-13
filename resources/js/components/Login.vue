@@ -139,22 +139,22 @@
                 console.log('Login google...')
                 this.$gAuth.signIn()
                     .then(GoogleUser => {
-                        console.log(GoogleUser.w3.ig + " " + GoogleUser.w3.U3 + " " + GoogleUser.w3.Eea)
-                        Auth.register(GoogleUser.w3.ig, GoogleUser.w3.U3, GoogleUser.w3.Eea)
-                            .then((response) => {
-                                this.$store.dispatch('initLogin')
-                                console.log('Token: ', response.body.token)
-                                this.$router.push('home');
-                            }, response => {
-                                console.log('Error: ', response.body.error)
-                                this.isLoading = false
-                                Vue.$toast.open({
-                                    type: 'error',
-                                    message: response.body.error,
-                                    position: 'bottom',
-                                    duration: 5000
-                                })
-                            });
+                        console.log('user', GoogleUser)
+                        // Auth.register(GoogleUser.w3.ig, GoogleUser.w3.U3, GoogleUser.w3.Eea)
+                        //     .then((response) => {
+                        //         this.$store.dispatch('initLogin')
+                        //         console.log('Token: ', response.body.token)
+                        //         this.$router.push('home');
+                        //     }, response => {
+                        //         console.log('Error: ', response.body.error)
+                        //         this.isLoading = false
+                        //         Vue.$toast.open({
+                        //             type: 'error',
+                        //             message: response.body.error,
+                        //             position: 'bottom',
+                        //             duration: 5000
+                        //         })
+                        //     });
 
                     })
                     .catch(error => {

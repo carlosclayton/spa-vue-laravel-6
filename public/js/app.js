@@ -2402,27 +2402,23 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_google_oauth2__WEBPACK_IMPORT
   },
   methods: {
     loginGoogle: function loginGoogle() {
-      var _this = this;
-
       console.log('Login google...');
       this.$gAuth.signIn().then(function (GoogleUser) {
-        console.log(GoogleUser.w3.ig + " " + GoogleUser.w3.U3 + " " + GoogleUser.w3.Eea);
-        _services_auth__WEBPACK_IMPORTED_MODULE_11__["default"].register(GoogleUser.w3.ig, GoogleUser.w3.U3, GoogleUser.w3.Eea).then(function (response) {
-          _this.$store.dispatch('initLogin');
-
-          console.log('Token: ', response.body.token);
-
-          _this.$router.push('home');
-        }, function (response) {
-          console.log('Error: ', response.body.error);
-          _this.isLoading = false;
-          vue__WEBPACK_IMPORTED_MODULE_0___default.a.$toast.open({
-            type: 'error',
-            message: response.body.error,
-            position: 'bottom',
-            duration: 5000
-          });
-        });
+        console.log('user', GoogleUser); // Auth.register(GoogleUser.w3.ig, GoogleUser.w3.U3, GoogleUser.w3.Eea)
+        //     .then((response) => {
+        //         this.$store.dispatch('initLogin')
+        //         console.log('Token: ', response.body.token)
+        //         this.$router.push('home');
+        //     }, response => {
+        //         console.log('Error: ', response.body.error)
+        //         this.isLoading = false
+        //         Vue.$toast.open({
+        //             type: 'error',
+        //             message: response.body.error,
+        //             position: 'bottom',
+        //             duration: 5000
+        //         })
+        //     });
       })["catch"](function (error) {//on fail do something
       });
     },
@@ -2433,19 +2429,19 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_google_oauth2__WEBPACK_IMPORT
       console.log('User cancelled the loader.');
     },
     onSubmit: function onSubmit() {
-      var _this2 = this;
+      var _this = this;
 
       this.isLoading = true;
       _services_auth__WEBPACK_IMPORTED_MODULE_11__["default"].login(this.email, this.password).then(function (response) {
         console.log('Token: ', response.body.token);
-        _this2.isLoading = false;
+        _this.isLoading = false;
 
-        _this2.$store.dispatch('initLogin');
+        _this.$store.dispatch('initLogin');
 
-        _this2.$router.push('home');
+        _this.$router.push('home');
       }, function (response) {
         console.log('Error: ', response.body.error);
-        _this2.isLoading = false;
+        _this.isLoading = false;
         vue__WEBPACK_IMPORTED_MODULE_0___default.a.$toast.open({
           type: 'error',
           message: response.body.error,
