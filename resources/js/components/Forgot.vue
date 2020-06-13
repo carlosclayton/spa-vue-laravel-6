@@ -26,14 +26,14 @@
                             <span class="help-block">{{ errors[0] }}</span>
                         </div>
                     </ValidationProvider>
-                    <div class="row">
-                        <div class="col-xs-4 text-right">
-                            <button type="submit" :disabled="invalid" class="btn btn-primary btn-block btn-flat">
-                                Send
-                            </button>
-                            <router-link class="btn btn-danger" :to="{ path: 'login'}">Cancel</router-link>
-                        </div>
+
+                    <div class="text-right">
+                        <button type="submit" :disabled="invalid" class="btn btn-primary btn-flat">
+                            Send
+                        </button>
+                        <router-link class="btn btn-danger" :to="{ path: 'login'}">Cancel</router-link>
                     </div>
+
                 </form>
             </ValidationObserver>
         </div>
@@ -49,7 +49,6 @@
     import 'vue-toast-notification/dist/theme-default.css';
 
     Vue.use(VueToast);
-
 
 
     import Loading from 'vue-loading-overlay';
