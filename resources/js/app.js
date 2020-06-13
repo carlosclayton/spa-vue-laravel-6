@@ -7,7 +7,6 @@ import VueResource from 'vue-resource'
 Vue.use(VueResource)
 // Vue.http.options.root = 'https://api-laravel-restful.herokuapp.com/api/';
 // Vue.http.options.root = 'http://api.laravel/api';
-
 Vue.http.options.root = process.env.MIX_API_URL;
 
 // Interceptor

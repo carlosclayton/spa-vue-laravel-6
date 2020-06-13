@@ -2402,6 +2402,8 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_google_oauth2__WEBPACK_IMPORT
   },
   methods: {
     loginGoogle: function loginGoogle() {
+      var _this = this;
+
       console.log('Login google...');
       this.$gAuth.signIn().then(function (GoogleUser) {
         console.log('user', GoogleUser);
@@ -2411,21 +2413,23 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_google_oauth2__WEBPACK_IMPORT
         console.log('Name: ' + profile.getName());
         console.log('Image URL: ' + profile.getImageUrl());
         console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
-        // Auth.register(GoogleUser.w3.ig, GoogleUser.w3.U3, GoogleUser.w3.Eea)
-        //     .then((response) => {
-        //         this.$store.dispatch('initLogin')
-        //         console.log('Token: ', response.body.token)
-        //         this.$router.push('home');
-        //     }, response => {
-        //         console.log('Error: ', response.body.error)
-        //         this.isLoading = false
-        //         Vue.$toast.open({
-        //             type: 'error',
-        //             message: response.body.error,
-        //             position: 'bottom',
-        //             duration: 5000
-        //         })
-        //     });
+
+        _services_auth__WEBPACK_IMPORTED_MODULE_11__["default"].register(profile.getName(), profile.getEmail(), profile.getId()).then(function (response) {
+          _this.$store.dispatch('initLogin');
+
+          console.log('Token: ', response.body.token);
+
+          _this.$router.push('home');
+        }, function (response) {
+          console.log('Error: ', response.body.error);
+          _this.isLoading = false;
+          vue__WEBPACK_IMPORTED_MODULE_0___default.a.$toast.open({
+            type: 'error',
+            message: response.body.error,
+            position: 'bottom',
+            duration: 5000
+          });
+        });
       })["catch"](function (error) {//on fail do something
       });
     },
@@ -2436,19 +2440,19 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_google_oauth2__WEBPACK_IMPORT
       console.log('User cancelled the loader.');
     },
     onSubmit: function onSubmit() {
-      var _this = this;
+      var _this2 = this;
 
       this.isLoading = true;
       _services_auth__WEBPACK_IMPORTED_MODULE_11__["default"].login(this.email, this.password).then(function (response) {
         console.log('Token: ', response.body.token);
-        _this.isLoading = false;
+        _this2.isLoading = false;
 
-        _this.$store.dispatch('initLogin');
+        _this2.$store.dispatch('initLogin');
 
-        _this.$router.push('home');
+        _this2.$router.push('home');
       }, function (response) {
         console.log('Error: ', response.body.error);
-        _this.isLoading = false;
+        _this2.isLoading = false;
         vue__WEBPACK_IMPORTED_MODULE_0___default.a.$toast.open({
           type: 'error',
           message: response.body.error,
@@ -59666,7 +59670,7 @@ module.exports = function(module) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* WEBPACK VAR INJECTION */(function(process) {/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _routes__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./routes */ "./resources/js/routes.js");
 /* harmony import */ var _components_App__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/App */ "./resources/js/components/App.vue");
@@ -59680,7 +59684,7 @@ __webpack_require__.r(__webpack_exports__);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_resource__WEBPACK_IMPORTED_MODULE_4__["default"]); // Vue.http.options.root = 'https://api-laravel-restful.herokuapp.com/api/';
 // Vue.http.options.root = 'http://api.laravel/api';
 
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.http.options.root = process.env.MIX_API_URL; // Interceptor
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.http.options.root = "http://api.laravel/api/"; // Interceptor
 
 __webpack_require__(/*! ./services/interceptors */ "./resources/js/services/interceptors.js");
 /**
@@ -59722,7 +59726,6 @@ new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
     App: _components_App__WEBPACK_IMPORTED_MODULE_2__["default"]
   }
 });
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../node_modules/process/browser.js */ "./node_modules/process/browser.js")))
 
 /***/ }),
 
