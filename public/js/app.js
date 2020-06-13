@@ -41181,7 +41181,7 @@ var render = function() {
             _c(
               "button",
               {
-                staticClass: "btn  btn-google",
+                staticClass: "btn btn-block btn-social btn-google btn-flat",
                 on: {
                   click: function($event) {
                     return _vm.loginGoogle()

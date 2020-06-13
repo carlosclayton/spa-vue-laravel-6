@@ -63,7 +63,7 @@
                 <a href="#" class="btn btn-block btn-social btn-facebook btn-flat"><i class="fa fa-facebook"></i> Sign
                     in using
                     Facebook</a>
-                <button v-on:click="loginGoogle()" class="btn  btn-google"><i
+                <button v-on:click="loginGoogle()" class="btn btn-block btn-social btn-google btn-flat"><i
                     class="fa fa-google-plus"></i> Sign in using Google+
                 </button>
             </div>
