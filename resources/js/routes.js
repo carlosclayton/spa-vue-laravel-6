@@ -5,6 +5,7 @@ import Login from './components/Login';
 import Home from "./components/Home";
 import store from './services/store';
 import Forgot from "./components/Forgot";
+import Register from "./components/Register";
 
 Vue.use(VueRouter);
 
@@ -24,6 +25,10 @@ const router = new VueRouter({
             component: Forgot,
         },
         {
+            path: '/register',
+            component: Register
+        },
+        {
             path: '*',
             redirect: '/login'
         }
@@ -33,7 +38,7 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
 
-    const publicPages = ['/login', '/forgot'];
+    const publicPages = ['/login', '/forgot', '/register', '/'];
     const authRequired = !publicPages.includes(to.path);
     const loggedIn = localStorage.get('token');
 

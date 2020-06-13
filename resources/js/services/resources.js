@@ -21,4 +21,13 @@ export default class Jwt {
             email: email
         })
     }
+
+    static register(name, email, password){
+        return Vue.http.post('register', {
+            name: name,
+            email: email,
+            password: password,
+            role: 2
+        })
+    }
 }
