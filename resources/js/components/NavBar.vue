@@ -1,6 +1,11 @@
 <template>
     <header class="main-header">
 
+        <simplert :useRadius="true"
+                  :useIcon="true"
+                  ref="simplert">
+        </simplert>
+
 
         <router-link to="/home" class="logo">
             <span class="logo-mini"><b>A</b>LT</span>
@@ -31,7 +36,7 @@
                                 <p>
                                     {{ currentUser.name }}
                                 </p>
-                                {{ currentUser.role }}
+                                {{ currentUser.role | role }}
                             </li>
                             <!-- Menu Footer-->
                             <li class="user-footer">
@@ -40,7 +45,7 @@
                                         class="glyphicon glyphicon-tasks"></span> Cadastro </a>
                                 </div>
                                 <div class="pull-right">
-                                    <button class="btn btn-danger btn-flat"><span
+                                    <button @click.prevent="sendLogout"  class="btn btn-danger btn-flat"><span
                                         class="glyphicon glyphicon-off"></span> Logout
                                     </button>
                                 </div>
@@ -56,15 +61,21 @@
 <script>
     import Vue from 'vue';
     import Gravatar from 'vue-gravatar';
-
     Vue.component('v-gravatar', Gravatar);
     import Auth from '../services/auth';
+    import Simplert from 'vue2-simplert';
 
     export default {
         name: 'va-navibar',
         data() {
             return {
                 currentUser: [],
+            }
+        },
+        filters: {
+            role: function (value) {
+                if (value == 1) return 'Administrator'
+                return 'User'
             }
         },
         mounted() {
@@ -76,6 +87,48 @@
 
             console.log('Navbar mounted');
         },
+        methods: {
+            logout() {
+                Auth.logout()
+                    .then(() => {
+                        this.$router.push('/login');
+                        Vue.$toast.open({
+                            type: 'success',
+                            message: 'Logout with success.',
+                            position: 'bottom',
+                            duration: 5000
+                        })
+                    })
+                    .catch((response) => {
+                        Vue.$toast.open({
+                            type: 'error',
+                            message: response.body.error,
+                            position: 'bottom',
+                            duration: 5000
+                        })
+                    })
+
+
+            },
+            sendLogout() {
+                let obj = {
+                    title: 'Logout',
+                    message: 'Deseja sair do sistema?',
+                    type: 'error',
+                    useConfirmBtn: true,
+                    customConfirmBtnText: 'Sim',
+                    customCloseBtnText: 'Não',
+                    customConfirmBtnClass: 'btn btn-primary btn-block margin-bottom btn-lg',
+                    customCloseBtnClass: 'btn btn-danger btn-block margin-bottom btn-lg',
+                    onConfirm: this.logout
+                }
+                this.$refs.simplert.openSimplert(obj)
+
+            }
+        },
+        components: {
+            Simplert
+        }
 
 
     }

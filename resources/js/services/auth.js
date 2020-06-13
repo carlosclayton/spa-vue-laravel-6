@@ -12,5 +12,13 @@ export default {
 
     user(){
         return Jwt.getUser()
+    },
+
+    logout(){
+        return Jwt.logout()
+            .then((response) => {
+                localStorage.remove('token');
+                return response
+            })
     }
 }

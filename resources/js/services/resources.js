@@ -11,4 +11,8 @@ export default class Jwt {
     static getUser(){
         return Vue.http.get('user');
     }
+
+    static logout(){
+        return Vue.http.post('logout')
+    }
 }
