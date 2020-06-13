@@ -2085,6 +2085,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
 
 
 
@@ -40513,21 +40514,35 @@ var render = function() {
                         }),
                         _vm._v(" "),
                         _c("div", { staticClass: "row" }, [
-                          _c("div", { staticClass: "col-xs-4" }, [
-                            _c(
-                              "button",
-                              {
-                                staticClass:
-                                  "btn btn-primary btn-block btn-flat",
-                                attrs: { type: "submit", disabled: invalid }
-                              },
-                              [
-                                _vm._v(
-                                  "\n                            Send\n                        "
-                                )
-                              ]
-                            )
-                          ])
+                          _c(
+                            "div",
+                            { staticClass: "col-xs-4 text-right" },
+                            [
+                              _c(
+                                "button",
+                                {
+                                  staticClass:
+                                    "btn btn-primary btn-block btn-flat",
+                                  attrs: { type: "submit", disabled: invalid }
+                                },
+                                [
+                                  _vm._v(
+                                    "\n                            Send\n                        "
+                                  )
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "router-link",
+                                {
+                                  staticClass: "btn btn-danger",
+                                  attrs: { to: { path: "login" } }
+                                },
+                                [_vm._v("Cancel")]
+                              )
+                            ],
+                            1
+                          )
                         ])
                       ],
                       1

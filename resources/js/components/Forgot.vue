@@ -27,10 +27,11 @@
                         </div>
                     </ValidationProvider>
                     <div class="row">
-                        <div class="col-xs-4">
+                        <div class="col-xs-4 text-right">
                             <button type="submit" :disabled="invalid" class="btn btn-primary btn-block btn-flat">
                                 Send
                             </button>
+                            <router-link class="btn btn-danger" :to="{ path: 'login'}">Cancel</router-link>
                         </div>
                     </div>
                 </form>
