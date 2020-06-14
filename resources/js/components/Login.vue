@@ -67,7 +67,6 @@
                     @logout="onLogout"
                     @get-initial-status="getUserData"
                     @sdk-loaded="sdkLoaded"
-
                 >
                 </facebook-login>
 
