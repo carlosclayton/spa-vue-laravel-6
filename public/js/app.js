@@ -2369,7 +2369,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
 
 
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_resource__WEBPACK_IMPORTED_MODULE_1__["default"]);
@@ -5871,7 +5870,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.container {\n    width: 100%;\n}\n.container button {\n    cursor: default;\n    min-width: 15rem;\n    color: #fff;\n    box-sizing: border-box;\n    margin: 0;\n    align-items: center;\n    border-radius: 0.25rem;\n    justify-content: center;\n    background-color: #3c57a4;\n    width: 100px;\n    display: inline-block;\n    margin-bottom: 4px;\n    font-weight: normal;\n    text-align: center;\n    white-space: nowrap;\n    vertical-align: middle;\n    touch-action: manipulation;\n    cursor: pointer;\n    background-image: none;\n    border: 1px solid transparent;\n    padding: 6px 12px;\n    font-size: 14px;\n    line-height: 1.42857143;\n}\n.container button img {\n    position: relative;\n    top: 0px;\n    left: 0px;\n    width: 15px;\n}\n.fb-signin-button {\n    /* This is where you control how the button looks. Be creative! */\n    cursor: default;\n    min-width: 15rem;\n    color: #fff;\n    box-sizing: border-box;\n    border: 1px solid rgba(255, 255, 255, 0.05);\n    margin: 0;\n    padding-top: 0.5rem;\n    padding-left: 1.275rem;\n    padding-right: 1.275rem;\n    padding-bottom: 0.5rem;\n    display: flex;\n    align-items: center;\n    border-radius: 0.25rem;\n    justify-content: center;\n    background-color: #3c57a4;\n    width: 100%;\n    margin-bottom: 5px;\n}\n.fb-signin-button i {\n    margin-right: 2px;\n}\n.button {\n    margin: 100%;\n}\n", ""]);
+exports.push([module.i, "\n.container {\n    width: 100%;\n    padding-right: 0px;\n    padding-left: 0px;\n}\n.container button {\n    cursor: default;\n    min-width: 15rem;\n    color: #fff;\n    box-sizing: border-box;\n    margin: 0;\n    align-items: center;\n    justify-content: center;\n    background-color: #3c57a4;\n    width: 100%;\n    display: inline-block;\n    margin-bottom: 4px;\n    font-weight: normal;\n    text-align: left;\n    white-space: nowrap;\n    vertical-align: middle;\n    touch-action: manipulation;\n    cursor: pointer;\n    background-image: none;\n    border: 1px solid transparent;\n    padding: 6px 12px;\n    font-size: 14px;\n    line-height: 1.42857143;\n}\n.container button[data-v-0af1f3c3]  {\n    font-size: 14px;\n}\n.container button img {\n\n    position: absolute;\n    left: 0;\n    top: 0;\n    bottom: 0;\n    width: 32px;\n    line-height: 34px;\n    font-size: 1.6em;\n    text-align: center;\n    border-right: 1px solid rgba(0, 0, 0, 0.2);\n}\n.fb-signin-button {\n    /* This is where you control how the button looks. Be creative! */\n    cursor: default;\n    min-width: 15rem;\n    color: #fff;\n    box-sizing: border-box;\n    border: 1px solid rgba(255, 255, 255, 0.05);\n    margin: 0;\n    padding-top: 0.5rem;\n    padding-left: 1.275rem;\n    padding-right: 1.275rem;\n    padding-bottom: 0.5rem;\n    display: flex;\n    align-items: center;\n    border-radius: 0.25rem;\n    justify-content: center;\n    background-color: #3c57a4;\n    width: 100%;\n    margin-bottom: 5px;\n}\n.fb-signin-button i {\n    margin-right: 2px;\n}\n.button {\n    margin: 100%;\n}\n", ""]);
 
 // exports
 
@@ -41307,8 +41306,6 @@ var render = function() {
                 }
               }),
               _vm._v(" "),
-              _vm._m(1),
-              _vm._v(" "),
               _c(
                 "button",
                 {
@@ -41362,22 +41359,6 @@ var staticRenderFns = [
         _vm._v("LTE")
       ])
     ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "a",
-      {
-        staticClass: "btn btn-block btn-social btn-facebook btn-flat",
-        attrs: { href: "#" }
-      },
-      [
-        _c("i", { staticClass: "fa fa-facebook" }),
-        _vm._v(" Sign\n                in using\n                Facebook")
-      ]
-    )
   }
 ]
 render._withStripped = true
@@ -59796,7 +59777,7 @@ module.exports = function(module) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+/* WEBPACK VAR INJECTION */(function(process) {/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _routes__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./routes */ "./resources/js/routes.js");
 /* harmony import */ var _components_App__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/App */ "./resources/js/components/App.vue");
@@ -59810,7 +59791,7 @@ __webpack_require__.r(__webpack_exports__);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_resource__WEBPACK_IMPORTED_MODULE_4__["default"]); // Vue.http.options.root = 'https://api-laravel-restful.herokuapp.com/api/';
 // Vue.http.options.root = 'http://api.laravel/api';
 
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.http.options.root = "http://api.laravel/api/"; // Interceptor
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.http.options.root = process.env.MIX_API_URL; // Interceptor
 
 __webpack_require__(/*! ./services/interceptors */ "./resources/js/services/interceptors.js");
 /**
@@ -59852,6 +59833,7 @@ new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
     App: _components_App__WEBPACK_IMPORTED_MODULE_2__["default"]
   }
 });
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../node_modules/process/browser.js */ "./node_modules/process/browser.js")))
 
 /***/ }),
 

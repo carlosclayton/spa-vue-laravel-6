@@ -67,12 +67,11 @@
                     @logout="onLogout"
                     @get-initial-status="getUserData"
                     @sdk-loaded="sdkLoaded"
+
                 >
                 </facebook-login>
 
-                <a href="#" class="btn btn-block btn-social btn-facebook btn-flat"><i class="fa fa-facebook"></i> Sign
-                    in using
-                    Facebook</a>
+
                 <button v-on:click="loginGoogle()" class="btn btn-block btn-social btn-google btn-flat"><i
                     class="fa fa-google-plus"></i> Sign in using Google+
                 </button>
@@ -93,10 +92,12 @@
 
     import Vue from 'vue'
     import VueResource from 'vue-resource'
+
     Vue.use(VueResource)
 
     import VueToast from 'vue-toast-notification';
     import 'vue-toast-notification/dist/theme-default.css';
+
     Vue.use(VueToast);
 
 
@@ -250,11 +251,12 @@
 </script>
 
 
-
 <style>
 
     .container {
         width: 100%;
+        padding-right: 0px;
+        padding-left: 0px;
     }
 
     .container button {
@@ -264,14 +266,13 @@
         box-sizing: border-box;
         margin: 0;
         align-items: center;
-        border-radius: 0.25rem;
         justify-content: center;
         background-color: #3c57a4;
-        width: 100px;
+        width: 100%;
         display: inline-block;
         margin-bottom: 4px;
         font-weight: normal;
-        text-align: center;
+        text-align: left;
         white-space: nowrap;
         vertical-align: middle;
         touch-action: manipulation;
@@ -281,13 +282,26 @@
         padding: 6px 12px;
         font-size: 14px;
         line-height: 1.42857143;
+
+    }
+    .container button[data-v-0af1f3c3]  {
+        font-size: 14px;
     }
 
+
+
     .container button img {
-        position: relative;
-        top: 0px;
-        left: 0px;
-        width: 15px;
+
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 32px;
+        line-height: 34px;
+        font-size: 1.6em;
+        text-align: center;
+        border-right: 1px solid rgba(0, 0, 0, 0.2);
+
     }
 
     .fb-signin-button {
