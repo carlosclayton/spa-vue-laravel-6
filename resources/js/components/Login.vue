@@ -60,6 +60,16 @@
 
             <div class="social-auth-links text-center">
                 <p>- OR -</p>
+                <facebook-login
+                    version="v5.0"
+                    appId="1847547945539092"
+                    @login="getUserData"
+                    @logout="onLogout"
+                    @get-initial-status="getUserData"
+                    @sdk-loaded="sdkLoaded"
+                >
+                </facebook-login>
+
                 <a href="#" class="btn btn-block btn-social btn-facebook btn-flat"><i class="fa fa-facebook"></i> Sign
                     in using
                     Facebook</a>
@@ -121,6 +131,8 @@
     }
     Vue.use(GAuth, GauthOption)
 
+    import facebookLogin from 'facebook-login-vuejs';
+
     export default {
         data() {
             return {
@@ -135,6 +147,40 @@
             document.body.className = 'hold-transition login-page';
         },
         methods: {
+            getUserData() {
+                this.FB.api('/me', 'GET', {fields: 'id,name,email, picture'},
+                    userInformation => {
+                        console.log('User face: ', userInformation)
+                        Auth.register(userInformation.name, userInformation.email, userInformation.id)
+                            .then((response) => {
+                                this.$store.dispatch('initLogin')
+                                console.log('Token: ', response.body.token)
+                                this.$router.push('home');
+                            }, response => {
+                                console.log('Error: ', response.body.error)
+                                this.isLoading = false
+                                Vue.$toast.open({
+                                    type: 'error',
+                                    message: response.body.error,
+                                    position: 'bottom',
+                                    duration: 5000
+                                })
+                            });
+                    }
+                )
+            },
+            sdkLoaded(payload) {
+                this.isConnected = payload.isConnected
+                this.FB = payload.FB
+                if (this.isConnected) this.getUserData()
+            },
+            onLogin() {
+                this.isConnected = true
+                this.getUserData()
+            },
+            onLogout() {
+                this.isConnected = false;
+            },
             loginGoogle() {
                 console.log('Login google...')
                 this.$gAuth.signIn()
@@ -197,7 +243,79 @@
         components: {
             ValidationProvider,
             ValidationObserver,
-            Loading
+            Loading,
+            facebookLogin
         }
     }
 </script>
+
+
+
+<style>
+
+    .container {
+        width: 100%;
+    }
+
+    .container button {
+        cursor: default;
+        min-width: 15rem;
+        color: #fff;
+        box-sizing: border-box;
+        margin: 0;
+        align-items: center;
+        border-radius: 0.25rem;
+        justify-content: center;
+        background-color: #3c57a4;
+        width: 100px;
+        display: inline-block;
+        margin-bottom: 4px;
+        font-weight: normal;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: middle;
+        touch-action: manipulation;
+        cursor: pointer;
+        background-image: none;
+        border: 1px solid transparent;
+        padding: 6px 12px;
+        font-size: 14px;
+        line-height: 1.42857143;
+    }
+
+    .container button img {
+        position: relative;
+        top: 0px;
+        left: 0px;
+        width: 15px;
+    }
+
+    .fb-signin-button {
+        /* This is where you control how the button looks. Be creative! */
+        cursor: default;
+        min-width: 15rem;
+        color: #fff;
+        box-sizing: border-box;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        margin: 0;
+        padding-top: 0.5rem;
+        padding-left: 1.275rem;
+        padding-right: 1.275rem;
+        padding-bottom: 0.5rem;
+        display: flex;
+        align-items: center;
+        border-radius: 0.25rem;
+        justify-content: center;
+        background-color: #3c57a4;
+        width: 100%;
+        margin-bottom: 5px;
+    }
+
+    .fb-signin-button i {
+        margin-right: 2px;
+    }
+
+    .button {
+        margin: 100%;
+    }
+</style>
